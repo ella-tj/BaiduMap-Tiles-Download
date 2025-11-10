@@ -14,6 +14,7 @@ import (
 
 var (
 	style           string
+	apiKey          string
 	a               float64
 	b               float64
 	c               float64
@@ -43,6 +44,7 @@ type PointF struct {
 func init() {
 	// 默认值
 	style = "normal"
+	apiKey = "E4805d16520de693a3fe707cdc962045"
 	a = 116.199599
 	b = 40.033261
 	c = 116.537074
@@ -120,6 +122,13 @@ func init() {
 	fmt.Scanln(&concurrentInput)
 	if concurrentInput != "" {
 		concurrentLimit, _ = strconv.Atoi(concurrentInput)
+	}
+
+	fmt.Printf("百度地图API密钥 (默认 %s): ", apiKey)
+	apiKeyInput := ""
+	fmt.Scanln(&apiKeyInput)
+	if apiKeyInput != "" {
+		apiKey = apiKeyInput
 	}
 }
 
@@ -216,7 +225,7 @@ func getID(lng, lat float64, z int) (int, int) {
 }
 
 func downloadTile(x, y, z int) {
-	url := fmt.Sprintf("https://api.map.baidu.com/customimage/tile?&x=%d&y=%d&z=%d&customid=%s", x, y, z, style)
+	url := fmt.Sprintf("https://api.map.baidu.com/customimage/tile?&x=%d&y=%d&z=%d&customid=%s&ak=%s", x, y, z, style, apiKey)
 	filePath := fmt.Sprintf("map/%d/%d/%d.png", z, x, y)
 
 	err := os.MkdirAll(filepath.Dir(filePath), 0755)
